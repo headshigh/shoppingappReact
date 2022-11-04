@@ -7,3 +7,9 @@
 .info:hover {
   opacity: 1;
 }
+.icon {
+  transition: all 0.1s ease-in;
+}
+.icon:hover {
+  scale: 1.08;
+}

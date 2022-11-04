@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { popularProducts } from "../data";
 import { Icon } from "@iconify/react";
 import css from "../products.css";
+import axios from "axios";
 function Products() {
+  const [data, setData] = useState("");
+  useEffect(() => {
+    const getdata = async () => {
+      const array = await axios.get("http://localhost:3000/api/product");
+
+      console.log(array.data.products);
+      setData(array.data.products);
+    };
+    getdata();
+  }, [1]);
+  console.log(data);
   const mapped = popularProducts.map((item) => {
     return (
       <div
@@ -17,11 +29,11 @@ function Products() {
             style={{ backgroundColor: "white", borderRadius: "50px" }}
             width="50px"
             icon="akar-icons:search"
-            className="p-3"
+            className="icon p-3"
           />
           {/* <div className="relative"> */}
           <Icon
-            className="p-3"
+            className="icon p-3"
             style={{ backgroundColor: "white", borderRadius: "50px" }}
             width="50px"
             icon="akar-icons:heart"
@@ -41,7 +53,7 @@ function Products() {
           <Icon
             style={{ backgroundColor: "white", borderRadius: "50px" }}
             width="50px"
-            className="p-3"
+            className=" icon p-3"
             icon="ant-design:shopping-cart-outlined"
           />
         </div>
