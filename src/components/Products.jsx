@@ -3,19 +3,40 @@ import { popularProducts } from "../data";
 import { Icon } from "@iconify/react";
 import css from "../products.css";
 import axios from "axios";
-function Products() {
-  const [data, setData] = useState("");
+import { useParams } from "react-router-dom";
+function Products({ cat, filters, sort }) {
+  const [data, setData] = useState([]);
+  console.log(sort);
+  if (sort == "newest") {
+    var sortText = "createdAt";
+  }
+  if (sort == "Price (asc)") {
+    sortText = "price";
+  } else {
+    sortText = "-price";
+  }
+  const color = filters.color;
+  console.log(sortText);
   useEffect(() => {
     const getdata = async () => {
-      const array = await axios.get("http://localhost:3000/api/product");
-
-      console.log(array.data.products);
-      setData(array.data.products);
+      try {
+        const array = await axios.get(
+          cat
+            ? `http://localhost:3000/api/product?category=${
+                filters.category
+              }&color=${filters.color.toLowerCase()}&size=${filters.size.toLowerCase()}&sort=${sortText}`
+            : "http://localhost:5000/api/product"
+        );
+        // console.log(array.data.products);
+        setData(array.data.products);
+      } catch (err) {
+        console.log(err);
+      }
     };
     getdata();
-  }, [1]);
+  }, [filters, sort]);
   console.log(data);
-  const mapped = popularProducts.map((item) => {
+  const mapped = data.map((item) => {
     return (
       <div
         key={item.id}
