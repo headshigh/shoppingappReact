@@ -15,7 +15,8 @@ function Products({ cat, filters, sort }) {
   } else {
     sortText = "-price";
   }
-  const color = filters.color;
+  // const color = filters.color;
+  console.log(filters);
   console.log(sortText);
   useEffect(() => {
     const getdata = async () => {

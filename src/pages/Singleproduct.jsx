@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 function Singleproduct() {
   const [quantity, setquantity] = React.useState(1);
+  const [data, setData] = React.useState({});
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get(
+        `http://localhost:3000/api/product/find/` + id
+      );
+      console.log(res.data);
+      setData(res.data[0]);
+    };
+    getData();
+  }, [id]);
   return (
     <div>
       <Navbar />
-      <div className="singlewrapper gap-9 flex px-6 mt-9 ">
-        <div className="left flex-2">
+      <div className="singlewrapper  flex   mt-9 ">
+        <div
+          style={{ width: "50%" }}
+          className="left flex-2 width flex justify-center"
+        >
           <img
-            style={{ width: "1800px" }}
+            style={{ height: "90vh", objectFit: "cover" }}
             className=""
-            src="https://i.ibb.co/S6qMxwr/jean.jpg"
+            src={data.img}
             alt=""
           />
         </div>
         <div className="right flex flex-col">
-          <h1 className="font-normal mb-4 text-3xl">Denim Jumpsuit</h1>
-          <p className="text-xl leading-7">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate
-            minus itaque laudantium neque molestias quae in maxime officia nam
-            consequatur? Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Quis id iste assumenda eaque voluptatum, deserunt, molestias,
-            eligendi odit accusantium explicabo possimus.
-          </p>
-          <h1 className="font-normal my-6 text-5xl">$20</h1>
+          <h1 className="font-normal mb-4 text-3xl">{data.title}</h1>
+          <p className="text-xl leading-7">{data.desc}</p>
+          <h1 className="font-normal my-6 text-5xl">${data.price}</h1>
           <div className="colorandselect flex items-center gap-3 ">
             <h1 className="text-xl">Colors</h1>
             <div className="flex">
